@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Девушка читает в осеннем парке · сценарий</title>
+<script>
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem("theme"); } catch (e) {}
+    var theme = saved || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+  :root, [data-theme="dark"] {
+    --bg: #172019;
+    --bg-elev: #1f2a23;
+    --card: #26332b;
+    --card-head: rgba(0, 0, 0, 0.18);
+    --ink: #f1ece4;
+    --ink-dim: #a9b4ac;
+    --line: rgba(241, 236, 228, 0.11);
+    --amber: #e3a75e;
+    --amber-soft: rgba(227, 167, 94, 0.17);
+    --water: #74b9c3;
+    --water-soft: rgba(116, 185, 195, 0.16);
+    --leaf: #93c08d;
+    --leaf-soft: rgba(147, 192, 141, 0.16);
+    --rose: #dd8676;
+    --rose-soft: rgba(221, 134, 118, 0.17);
+    --violet: #b29ad8;
+    --violet-soft: rgba(178, 154, 216, 0.17);
+    --slate: #59646c;
+    --on-accent: #172019;
+    --shadow: none;
+  }
+  [data-theme="light"] {
+    --bg: #f5f1ea;
+    --bg-elev: #fffdf9;
+    --card: #ffffff;
+    --card-head: #faf6ef;
+    --ink: #1e2621;
+    --ink-dim: #5b665f;
+    --line: rgba(30, 38, 33, 0.1);
+    --amber: #b8701f;
+    --amber-soft: rgba(184, 112, 31, 0.12);
+    --water: #2a7f8c;
+    --water-soft: rgba(42, 127, 140, 0.11);
+    --leaf: #4c8a45;
+    --leaf-soft: rgba(76, 138, 69, 0.12);
+    --rose: #b4523f;
+    --rose-soft: rgba(180, 82, 63, 0.11);
+    --violet: #7353a8;
+    --violet-soft: rgba(115, 83, 168, 0.11);
+    --slate: #8a949b;
+    --on-accent: #ffffff;
+    --shadow: 0 1px 2px rgba(30, 38, 33, 0.06), 0 4px 14px rgba(30, 38, 33, 0.05);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    font-size: 15px;
+    transition: background 0.2s, color 0.2s;
+  }
+  a { color: inherit; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: var(--card-head); padding: 1px 5px; border-radius: 5px; }
+  strong { color: var(--ink); font-weight: 650; }
+
+  .layout {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 16px calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+  aside { display: none; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(120% 90% at 0% 0%, var(--water-soft), transparent 60%),
+      radial-gradient(90% 80% at 100% 10%, var(--amber-soft), transparent 55%),
+      var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 22px 18px 18px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); font-weight: 700; margin-bottom: 8px; padding-right: 52px; }
+  h1 { font-size: 26px; line-height: 1.2; font-weight: 750; letter-spacing: -0.02em; margin-bottom: 12px; padding-right: 52px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .chip { font-size: 12.5px; padding: 6px 10px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); color: var(--ink-dim); }
+  .chip b { color: var(--ink); font-weight: 650; }
+  .intro p { color: var(--ink-dim); margin-top: 10px; }
+  .rhythm { margin-top: 4px; }
+  .rhythm-k { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-dim); font-weight: 700; margin-bottom: 8px; }
+  .rhythm ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+  .rhythm li { font-size: 13px; padding: 5px 10px; border-radius: 10px; background: var(--water-soft); color: var(--ink); position: relative; }
+  .rhythm li:not(:last-child)::after { content: "→"; margin-left: 8px; color: var(--water); font-weight: 700; }
+
+  .theme-toggle {
+    position: absolute; top: 14px; right: 14px;
+    width: 40px; height: 40px; border-radius: 12px;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    font-size: 18px; cursor: pointer; display: grid; place-items: center;
+  }
+  .theme-toggle:active { transform: scale(0.95); }
+
+  /* ---------- warnings ---------- */
+  .warnings {
+    background: var(--amber-soft);
+    border: 1px solid var(--amber);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .warn-title { font-weight: 700; color: var(--amber); margin-bottom: 6px; }
+  .warnings ul { padding-left: 18px; color: var(--ink); font-size: 14px; }
+  .warnings li + li { margin-top: 4px; }
+
+  /* ---------- summary + timeline ---------- */
+  .overview {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+  .stat-v { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .stat-k { font-size: 12px; color: var(--ink-dim); line-height: 1.3; }
+  .lenses { display: grid; gap: 6px; margin-bottom: 14px; }
+  .sum-row { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 auto; }
+  .sum-k { font-weight: 650; }
+  .sum-v { color: var(--ink-dim); }
+
+  .timeline { display: flex; gap: 3px; height: 40px; }
+  .seg {
+    display: grid; place-items: center;
+    min-width: 18px; border-radius: 7px;
+    text-decoration: none; font-size: 12px; font-weight: 800; color: var(--on-accent);
+    transition: transform 0.1s, filter 0.1s;
+  }
+  .seg:hover { filter: brightness(1.1); }
+  .seg:active { transform: scale(0.94); }
+  .seg.prio-nice, .seg.prio-extra { opacity: 0.5; }
+  .timeline-scale { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-dim); margin-top: 6px; }
+
+  .lens-bg-sirui { background: var(--water); }
+  .lens-bg-viltrox { background: var(--amber); }
+  .lens-bg-phone { background: var(--leaf); }
+  .lens-bg-other { background: var(--violet); }
+  .lens-bg-none { background: var(--slate); color: #fff; }
+
+  /* ---------- nav (mobile) ---------- */
+  nav.top {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 10px 2px 12px; margin: 0 -2px 6px;
+    background: linear-gradient(var(--bg) 72%, transparent);
+    scrollbar-width: none;
+  }
+  nav.top::-webkit-scrollbar { display: none; }
+  nav.top a {
+    flex: 0 0 auto; text-decoration: none; font-size: 13px; font-weight: 650;
+    padding: 8px 12px; border-radius: 999px; background: var(--card); border: 1px solid var(--line);
+  }
+
+  /* ---------- sections ---------- */
+  section { margin-bottom: 26px; scroll-margin-top: 60px; }
+  h2 { font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-dim); font-weight: 750; margin: 6px 0 12px; }
+  h3.sub { font-size: 16px; margin: 14px 0 8px; }
+  section > p { color: var(--ink-dim); margin: 10px 2px; }
+  .plain { padding-left: 20px; color: var(--ink-dim); }
+  .plain li + li { margin-top: 4px; }
+
+  .note {
+    background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--slate);
+    border-radius: 16px; padding: 14px 14px 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow);
+  }
+  .note.amber { border-left-color: var(--amber); }
+  .note.water { border-left-color: var(--water); }
+  .note.leaf { border-left-color: var(--leaf); }
+  .note.rose { border-left-color: var(--rose); }
+  .note.violet { border-left-color: var(--violet); }
+  .note h3 { font-size: 15.5px; margin-bottom: 4px; }
+  .note p { color: var(--ink-dim); font-size: 14.5px; }
+
+  /* ---------- shots ---------- */
+  .shot {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    margin-bottom: 12px; overflow: hidden; scroll-margin-top: 64px; box-shadow: var(--shadow);
+  }
+  .shot.prio-nice, .shot.prio-extra { border-style: dashed; }
+  .shot-meta { padding: 14px 14px 12px; background: var(--card-head); }
+  .shot-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .num {
+    width: 38px; height: 38px; border-radius: 12px; flex: 0 0 auto;
+    display: grid; place-items: center; font-weight: 800; font-size: 16px; color: var(--on-accent);
+  }
+  .shot-head h3 { font-size: 17.5px; line-height: 1.25; font-weight: 720; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 7px; background: var(--bg); color: var(--ink-dim); border: 1px solid var(--line); }
+  .tag.lens-sirui { color: var(--water); background: var(--water-soft); border-color: transparent; }
+  .tag.lens-viltrox { color: var(--amber); background: var(--amber-soft); border-color: transparent; }
+  .tag.lens-phone { color: var(--leaf); background: var(--leaf-soft); border-color: transparent; }
+  .tag.lens-other { color: var(--violet); background: var(--violet-soft); border-color: transparent; }
+  .tag.prio-must { color: var(--rose); background: var(--rose-soft); border-color: transparent; }
+  .tag.prio-nice { color: var(--leaf); background: var(--leaf-soft); border-color: transparent; }
+  .tag.prio-extra { color: var(--ink-dim); }
+
+  .shot-body { padding: 14px; }
+  .shot-body p { color: var(--ink); opacity: 0.88; }
+  .frame { display: block; width: 100%; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--line); }
+  .cut {
+    display: flex; gap: 8px; align-items: flex-start;
+    margin-top: 12px; padding: 10px 12px; border-radius: 12px;
+    background: var(--amber-soft); color: var(--ink); font-size: 14px; line-height: 1.45;
+  }
+  .cut .arrow { color: var(--amber); font-weight: 800; }
+
+  /* ---------- checklists ---------- */
+  .checklist { list-style: none; }
+  .checklist li { margin-bottom: 8px; }
+  .checklist label {
+    display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 12px 14px; font-size: 14.5px; color: var(--ink); box-shadow: var(--shadow);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .checklist input { position: absolute; opacity: 0; pointer-events: none; }
+  .checklist .box {
+    width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--ink-dim);
+    flex: 0 0 auto; margin-top: 1px; display: grid; place-items: center; transition: background 0.15s, border-color 0.15s;
+  }
+  .checklist .step {
+    flex: 0 0 auto; width: 22px; height: 22px; border-radius: 7px; margin-top: 1px;
+    background: var(--water-soft); color: var(--water); font-size: 12px; font-weight: 800; display: grid; place-items: center;
+  }
+  .checklist input:checked + .box { background: var(--leaf); border-color: var(--leaf); }
+  .checklist input:checked + .box::after { content: "✓"; color: var(--on-accent); font-weight: 900; font-size: 13px; }
+  .checklist input:checked ~ .txt { opacity: 0.45; text-decoration: line-through; }
+
+  /* ---------- min set ---------- */
+  .minset { background: var(--bg-elev); border: 1px dashed var(--amber); border-radius: 18px; padding: 16px; }
+  .minset-title { font-weight: 700; }
+  .tiles { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+  .tiles a {
+    width: 40px; height: 40px; border-radius: 11px; background: var(--amber); color: var(--on-accent);
+    font-weight: 800; display: grid; place-items: center; text-decoration: none;
+  }
+  .minset p { color: var(--ink-dim); font-size: 14px; margin-top: 10px; }
+
+  footer { text-align: center; color: var(--ink-dim); font-size: 12px; margin-top: 10px; opacity: 0.75; }
+
+  /* ---------- desktop ---------- */
+  @media (min-width: 880px) {
+    body { font-size: 15.5px; }
+    .layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; padding-top: 28px; }
+    aside {
+      display: block; position: sticky; top: 24px; align-self: start;
+      max-height: calc(100vh - 48px); overflow-y: auto;
+    }
+    aside .side-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-dim); font-weight: 750; margin: 0 0 8px 4px; }
+    aside .side-links a {
+      display: block; text-decoration: none; padding: 7px 10px; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--ink-dim);
+    }
+    aside .side-links a:hover { background: var(--card); color: var(--ink); }
+    aside .side-shots { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 18px; }
+    aside .side-shots a {
+      display: grid; place-items: center; height: 34px; border-radius: 9px; text-decoration: none;
+      font-weight: 800; font-size: 13px; background: var(--card); border: 1px solid var(--line); border-bottom-width: 3px;
+    }
+    aside .side-shots a:hover { background: var(--bg-elev); }
+    .lens-bd-sirui { border-bottom-color: var(--water) !important; }
+    .lens-bd-viltrox { border-bottom-color: var(--amber) !important; }
+    .lens-bd-phone { border-bottom-color: var(--leaf) !important; }
+    .lens-bd-other { border-bottom-color: var(--violet) !important; }
+    .lens-bd-none { border-bottom-color: var(--slate) !important; }
+
+    nav.top { display: none; }
+    h1 { font-size: 32px; }
+    .hero { padding: 28px 28px 24px; }
+    .overview { padding: 20px; }
+    .summary { grid-template-columns: repeat(3, minmax(0, 200px)); }
+    .timeline { height: 48px; }
+
+    .shot { display: grid; grid-template-columns: minmax(200px, 30%) minmax(0, 1fr); }
+    .shot-meta { padding: 18px; border-right: 1px solid var(--line); }
+    .shot-head { align-items: flex-start; }
+    .shot-body { padding: 18px 20px; }
+    .notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    #prep .note { margin-bottom: 0; }
+    #prep { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    #prep > h2 { grid-column: 1 / -1; margin-bottom: 2px; }
+    #order .checklist, #sound .checklist { columns: 2; column-gap: 10px; }
+    #order .checklist li, #sound .checklist li { break-inside: avoid; }
+  }
+
+  @media print {
+    nav.top, aside, .theme-toggle { display: none !important; }
+    body { background: #fff; color: #000; }
+    .shot, .note, .checklist label { break-inside: avoid; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <div class="side-title">Разделы</div>
+    <div class="side-links"><a href="#prep">Перед съёмкой</a><a href="#shots">Кадры</a><a href="#order">Порядок съёмки</a><a href="#sound">Звук, который надо записать</a><a href="#min">Если время кончится</a></div>
+    <div class="side-shots"><a href="#shot-0" class="lens-bd-none">0</a><a href="#shot-1" class="lens-bd-sirui">1</a><a href="#shot-2" class="lens-bd-sirui">2</a><a href="#shot-3" class="lens-bd-sirui">3</a><a href="#shot-4" class="lens-bd-viltrox">4</a><a href="#shot-5" class="lens-bd-sirui">5</a><a href="#shot-6" class="lens-bd-sirui">6</a><a href="#shot-7" class="lens-bd-sirui">7</a><a href="#shot-8" class="lens-bd-sirui">8</a><a href="#shot-9" class="lens-bd-sirui">9</a></div>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <button class="theme-toggle" type="button" aria-label="Сменить тему" onclick="toggleTheme()">◐</button>
+      <div class="eyebrow">Сценарий</div>
+      <h1>Девушка читает в осеннем парке</h1>
+      <div class="chips"><span class="chip"><b>Концепция</b> C3, «Она не замечает»</span><span class="chip"><b>Формат</b> горизонталь, 2.37:1 (Sirui 40)</span><span class="chip"><b>Длина</b> ~37 с. Без музыки, только звуки парка и книги</span></div>
+      <div class="intro"><div class="rhythm"><div class="rhythm-k">Ритм</div><ol><li>темнота</li><li>книга открывается</li><li>она читает, а вокруг живёт пруд</li><li>страница</li><li>улыбка над строчкой, кряканье, смеётся</li><li>тихий общий план</li><li>закладка почти в конце, книга закрывается</li><li>темнота</li></ol></div>
+<p>Сюжет без слов. Время, которое она просидела, видно по одному признаку: закладка-лист в начале лежит на первых страницах, в конце почти в самом конце книги.</p></div>
+    </header>
+
+    
+
+    <div class="overview">
+      <div class="summary">
+    <div class="stat"><div class="stat-v">10</div><div class="stat-k">кадров</div></div>
+    <div class="stat"><div class="stat-v">9</div><div class="stat-k">обязательных</div></div>
+    <div class="stat"><div class="stat-v">~36,3</div><div class="stat-k">секунд · в брифе 0:35–0:40</div></div>
+  </div>
+  <div class="lenses"><div class="sum-row"><span class="dot lens-bg-sirui"></span><span class="sum-k">Sirui</span><span class="sum-v">кадры 1, 2, 3, 5, 6, 7, 8, 9</span></div><div class="sum-row"><span class="dot lens-bg-viltrox"></span><span class="sum-k">Viltrox 27</span><span class="sum-v">кадр 4</span></div></div>
+      <div class="timeline" role="navigation" aria-label="Полоса времени">
+    <a class="seg lens-bg-none prio-must" style="flex-grow:1.25" href="#shot-0" title="0. Темнота · ~1–1.5 с"><span>0</span></a><a class="seg lens-bg-sirui prio-must" style="flex-grow:4" href="#shot-1" title="1. Книга открывается · ~4 с"><span>1</span></a><a class="seg lens-bg-sirui prio-must" style="flex-grow:5" href="#shot-2" title="2. Читает и пьёт кофе · ~5 с"><span>2</span></a><a class="seg lens-bg-sirui prio-must" style="flex-grow:5" href="#shot-3" title="3. Пруд и утки · ~5 с"><span>3</span></a><a class="seg lens-bg-viltrox prio-must" style="flex-grow:4" href="#shot-4" title="4. Палец по бумаге · ~4 с"><span>4</span></a><a class="seg lens-bg-sirui prio-must" style="flex-grow:3" href="#shot-5" title="5. Улыбка над строчкой · ~3 с"><span>5</span></a><a class="seg lens-bg-sirui prio-must" style="flex-grow:3" href="#shot-6" title="6. Утки её глазами · ~3 с"><span>6</span></a><a class="seg lens-bg-sirui prio-must" style="flex-grow:3" href="#shot-7" title="7. Смеётся · ~3 с"><span>7</span></a><a class="seg lens-bg-sirui prio-nice" style="flex-grow:4" href="#shot-8" title="8. Она и пруд · ~4 с"><span>8</span></a><a class="seg lens-bg-sirui prio-must" style="flex-grow:4" href="#shot-9" title="9. Закладка и темнота · ~4 с"><span>9</span></a>
+  </div>
+  <div class="timeline-scale"><span>0 с</span><span>~36,3 с</span></div>
+    </div>
+
+    <nav class="top"><a href="#prep">Перед съёмкой</a><a href="#shots">Кадры</a><a href="#order">Порядок съёмки</a><a href="#sound">Звук, который надо записать</a><a href="#min">Если время кончится</a></nav>
+
+    <section id="prep"><h2>Перед съёмкой</h2><div class="note amber"><h3>Как всё лежит, на весь ролик</h3><p>Она сидит на скамейке лицом к пруду. Книга на коленях, левая рука придерживает её снизу. Стакан с горячим кофе стоит на скамейке справа от неё, всегда на одном месте. Всё делает правая рука: открывает книгу, берёт кофе, перелистывает, перекладывает закладку. Лист-закладка, пока она читает, лежит в конце книги, под задней обложкой.</p></div>
+<div class="note water"><h3>Черешок как часы</h3><p>Когда книга закрыта, черешок листа торчит над верхним обрезом страниц. В начале он торчит у первых страниц, ближе к передней обложке, в конце — у самой задней. Поэтому кадры 1 и 9 снимаем так, чтобы был виден верхний обрез страниц. Тогда разницу видно и на закрытой книге.</p></div>
+<div class="note leaf"><h3>Реквизит</h3><p>Книга толщиной от 300 страниц, на шершавой бумаге, не глянцевой. Сухой кленовый лист с длинным черешком и запасной такой же. Стакан, из которого виден пар, то есть без крышки. Одежда однотонная, тёплая, без логотипов.</p></div>
+<div class="note rose"><h3>Камера</h3><p>24 кадра, выдержка 1/48, S-Log3. Днём на открытой диафрагме без переменного ND будет пересвет, он нужен на всех кадрах. В общих планах (3 и 8) лучше прикрыться до T2.4: с этого значения боке у Sirui становится овальным. Всё снимается статикой, гимбал не нужен.</p></div>
+<div class="note violet"><h3>Звук</h3><p>Пишется отдельно, близко, петличкой или телефоном у самого источника. Без него ролик не склеится, список в конце.</p></div></section>
+<section id="shots"><h2>Кадры</h2><article class="shot prio-must" id="shot-0">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-none">0</div>
+        <h3>Темнота</h3>
+      </div>
+      <div class="tags"><span class="tag">Чёрный экран</span><span class="tag lens-none">—</span><span class="tag">~1–1.5 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Картинки нет. Звук начинается сразу, без тишины: ветер в листве, где-то далеко утки. Почти сразу скрип обложки — книгу начинают открывать. Темноту не затягивать: секунда — это предел, дальше зритель решит, что видео не грузится.</p>
+      <div class="cut"><span class="arrow">→</span><span>На скрип обложки из чёрного проявляется кадр 1.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-1">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">1</div>
+        <h3>Книга открывается</h3>
+      </div>
+      <div class="tags"><span class="tag">Крупно · статика</span><span class="tag lens-sirui">Sirui</span><span class="tag">~4 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Книга лежит у неё на коленях, в кадре только книга, руки и колени. Камера низко и чуть сбоку, почти на уровне книги, чтобы был виден верхний обрез страниц и торчащий из него черешок листа, ближе к передней обложке. Правая рука берётся за книгу у листа и открывает её прямо на закладке. Разворот примерно на 15%: слева тонкая пачка прочитанных страниц, справа толстая. На страницу падает свет. Правая рука берёт лист за черешок, мельком смотрит на него и вкладывает в самый конец книги, под заднюю обложку. Потом поудобнее устраивает книгу на коленях.</p>
+      <div class="cut"><span class="arrow">→</span><span>На этом движении режем на средний план: она ещё поправляет книгу, а мы уже видим её целиком.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-2">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">2</div>
+        <h3>Читает и пьёт кофе</h3>
+      </div>
+      <div class="tags"><span class="tag">Средний, по пояс · статика</span><span class="tag lens-sirui">Sirui</span><span class="tag">~5 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Камера спереди-сбоку, со стороны стакана, чуть ниже уровня её глаз, метрах в двух-трёх. В кадре она, книга на коленях и стакан на скамейке справа. Она дочитывает строчку, устраиваясь. Не отрывая глаз от страницы, правой рукой нащупывает стакан, подносит ко рту, делает глоток. Если солнце сзади или сбоку, над стаканом виден пар, ради него можно сдвинуться. Ставит стакан ровно на то же место.</p>
+      <div class="cut"><span class="arrow">→</span><span>Режем в момент, когда стакан коснулся скамейки.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-3">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">3</div>
+        <h3>Пруд и утки</h3>
+      </div>
+      <div class="tags"><span class="tag">Общий · статика, перевод фокуса</span><span class="tag lens-sirui">Sirui</span><span class="tag">~5 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Камера на мини-опоре гимбала прямо на земле у кромки воды, смотрит через пруд на скамейку. Впереди вода и утки, она на скамейке маленькая, метрах в десяти-пятнадцати. Кадр начинается с неё в фокусе: правая рука как раз отпускает стакан, она снова читает. Потом фокус медленно уходит вперёд, на уток, и она растворяется в размытии. Для этого в камере выставить медленную скорость перевода автофокуса и коснуться экрана на утках. Уже размытая, она поднимает правую руку к странице, и одновременно с этим звучит шорох бумаги, записанный вблизи. Утки плывут, как хотят: дубль держим минуту-две и выбираем отрезок, где они проходят на переднем плане. Если так и не проплыли, впереди просто вода с рябью и листьями, фокус переходит так же.</p>
+      <div class="cut"><span class="arrow">→</span><span>Шорох из размытого плана тянет склейку на страницу.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-4">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-viltrox">4</div>
+        <h3>Палец по бумаге</h3>
+      </div>
+      <div class="tags"><span class="tag">Очень крупно · статика</span><span class="tag lens-viltrox">Viltrox 27</span><span class="tag">~4 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Единственный кадр не на Sirui: тот на таком расстоянии не наводится. Камера сантиметрах в тридцати от книги, сбоку и низко, почти в плоскости страницы. Солнце должно падать на бумагу скользом, сбоку: тогда вылезают зерно и неровности, и строчки ложатся рельефом. Её лучше развернуть к солнцу так, а не двигать камеру. В кадре нижний край правой страницы и несколько последних строчек. Подушечка указательного пальца правой руки медленно ведёт по последней строчке до конца, слышно, как кожа шуршит по бумаге. Палец доходит до нижнего правого уголка, цепляет его, страница поднимается и переворачивается влево. Кадр снят в 16:9, на монтаже его обрежут до 2.37:1, поэтому сверху и снизу оставить запас.</p>
+      <div class="cut"><span class="arrow">→</span><span>Склейка на лицо, как только страница легла.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-5">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">5</div>
+        <h3>Улыбка над строчкой</h3>
+      </div>
+      <div class="tags"><span class="tag">Крупно, голова и плечи · статика</span><span class="tag lens-sirui">Sirui</span><span class="tag">~3 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Камера чуть больше метра от неё, в три четверти, со стороны пруда, но не на линии её взгляда: когда она поднимет глаза на воду, взгляд должен пройти мимо объектива, а не в него. Она читает, взгляд вниз, в книгу. На какой-то строчке уголки губ трогает улыбка. Улыбка должна быть настоящей, а не позой: пусть читает что-то по-настоящему смешное или милое, и дубль длинный. Тут же за кадром слышно кряканье, и она поднимает глаза на звук — в сторону пруда, мимо камеры. Кадры 5 и 7 снимаются одним дублем: читает, улыбается, поднимает глаза, смотрит, смеётся, опускает глаза. На монтаже его режут надвое. Кряканье в момент съёмки не нужно, подложим. Можно просто тихо сказать ей «вверх».</p>
+      <div class="cut"><span class="arrow">→</span><span>Склейка с её взгляда на то, что она видит.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-6">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">6</div>
+        <h3>Утки её глазами</h3>
+      </div>
+      <div class="tags"><span class="tag">Средний план воды · статика</span><span class="tag lens-sirui">Sirui</span><span class="tag">~3 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Камера примерно с её места и на высоте её глаз, когда она сидит, смотрит на воду. В кадре только пруд и утки. Что они делают, то и берём: плывут, чистят перья, ныряют, ссорятся. Подойдёт всё, потому что мы смотрим её глазами. Снимать можно в любой момент дня, отдельно от неё.</p>
+      <div class="cut"><span class="arrow">→</span><span>Склейка обратно на её лицо.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-7">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">7</div>
+        <h3>Смеётся</h3>
+      </div>
+      <div class="tags"><span class="tag">Крупно · статика</span><span class="tag lens-sirui">Sirui</span><span class="tag">~3 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Продолжение того же дубля, что кадр 5. Она смотрит на уток, улыбка становится шире, короткий смешок про себя. Опускает глаза обратно в книгу.</p>
+      <div class="cut"><span class="arrow">→</span><span>Склейка на общий план, чтобы после лица дать воздух.</span></div>
+    </div>
+  </article>
+<article class="shot prio-nice" id="shot-8">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">8</div>
+        <h3>Она и пруд</h3>
+      </div>
+      <div class="tags"><span class="tag">Общий, со спины через плечо · статика</span><span class="tag lens-sirui">Sirui</span><span class="tag">~4 с</span><span class="tag prio-nice">желательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Камера в трёх-четырёх метрах позади скамейки, чуть сбоку, со стороны стакана. В кадре её спина и затылок, край книги, стакан на скамейке справа, а впереди пруд и утки. Впервые она и утки резкие в одном кадре, и видно, что они рядом. Ничего не происходит: она читает. Это пауза перед финалом, длину держим, не обрезаем.</p>
+      <div class="cut"><span class="arrow">→</span><span>Склейка на книгу, на ту же точку, что в кадре 1.</span></div>
+    </div>
+  </article>
+<article class="shot prio-must" id="shot-9">
+    <div class="shot-meta">
+      <div class="shot-head">
+        <div class="num lens-bg-sirui">9</div>
+        <h3>Закладка и темнота</h3>
+      </div>
+      <div class="tags"><span class="tag">Крупно · статика</span><span class="tag lens-sirui">Sirui</span><span class="tag">~4 с</span><span class="tag prio-must">обязательный</span></div>
+    </div>
+    <div class="shot-body">
+      
+      <p>Та же точка и та же крупность, что в кадре 1, только теперь всё наоборот. Слева почти вся книга, справа несколько страниц. Правая рука достаёт лист из-под задней обложки и кладёт его в разворот. Закрывает книгу, черешок теперь торчит у самой задней обложки.</p>
+      <div class="cut"><span class="arrow">→</span><span>В момент, когда обложка легла, режем в чёрный. Глухой хлопок книги, и ещё секунду в темноте слышны ветер и утки. Если ролик будет крутиться по кругу, этот ветер перетекает в ветер кадра 0.</span></div>
+    </div>
+  </article><p>Итого около 37 секунд.</p></section>
+<section id="order"><h2>Порядок съёмки</h2><p>Не порядок фильма, а как удобнее на месте.</p>
+<ul class="checklist ordered"><li><label><input type="checkbox" data-key="order-0"><span class="box" aria-hidden="true"></span><span class="step">1</span><span class="txt"><strong>Кадры 1 и 9 подряд, с одной точки.</strong> Камеру между ними не трогать. Снять 1 с закладкой на 15%, потом переложить страницы на 85% и лист и снять 9. Так совпадут свет, точка и крупность, и разница в толщине будет читаться сразу.</span></label></li><li><label><input type="checkbox" data-key="order-1"><span class="box" aria-hidden="true"></span><span class="step">2</span><span class="txt"><strong>Кадр 2.</strong> Средний с кофе. Проверить, видно ли пар против солнца.</span></label></li><li><label><input type="checkbox" data-key="order-2"><span class="box" aria-hidden="true"></span><span class="step">3</span><span class="txt"><strong>Кадры 5 и 7 одним дублем.</strong> Снять несколько дублей, пока улыбка не выйдет настоящей.</span></label></li><li><label><input type="checkbox" data-key="order-3"><span class="box" aria-hidden="true"></span><span class="step">4</span><span class="txt"><strong>Кадр 8.</strong> Сзади через плечо.</span></label></li><li><label><input type="checkbox" data-key="order-4"><span class="box" aria-hidden="true"></span><span class="step">5</span><span class="txt"><strong>Кадр 3.</strong> Камера у воды, длинные дубли, ждём уток. Пока ждёшь, можно снять и кадр 6.</span></label></li><li><label><input type="checkbox" data-key="order-5"><span class="box" aria-hidden="true"></span><span class="step">6</span><span class="txt"><strong>Кадр 4 в конце, на Viltrox 27.</strong> Объектив меняется один раз за всю съёмку. Перед кадром развернуть её так, чтобы солнце легло на страницу скользом.</span></label></li><li><label><input type="checkbox" data-key="order-6"><span class="box" aria-hidden="true"></span><span class="step">7</span><span class="txt"><strong>Звук отдельно</strong>, по списку ниже.</span></label></li></ul></section>
+<section id="sound"><h2>Звук, который надо записать</h2><ul class="checklist"><li><label><input type="checkbox" data-key="sound-0"><span class="box" aria-hidden="true"></span><span class="txt">Ветер и парк без людей и машин, минуту целиком.</span></label></li><li><label><input type="checkbox" data-key="sound-1"><span class="box" aria-hidden="true"></span><span class="txt">Утки: кряканье поближе, несколько штук. Без него не склеить кадры 5 и 6.</span></label></li><li><label><input type="checkbox" data-key="sound-2"><span class="box" aria-hidden="true"></span><span class="txt">Скрип открывающейся обложки.</span></label></li><li><label><input type="checkbox" data-key="sound-3"><span class="box" aria-hidden="true"></span><span class="txt">Шорох перелистывания.</span></label></li><li><label><input type="checkbox" data-key="sound-4"><span class="box" aria-hidden="true"></span><span class="txt">Палец по бумаге: близко, несколько раз.</span></label></li><li><label><input type="checkbox" data-key="sound-5"><span class="box" aria-hidden="true"></span><span class="txt">Глоток из стакана и стук стакана о скамейку.</span></label></li><li><label><input type="checkbox" data-key="sound-6"><span class="box" aria-hidden="true"></span><span class="txt">Глухой хлопок закрытой книги, несколько вариантов силы.</span></label></li></ul></section>
+<section id="min"><h2>Если время кончится</h2><div class="minset">
+    <div class="minset-title">Ролик собирается из этих кадров</div>
+    <div class="tiles"><a href="#shot-0">0</a><a href="#shot-1">1</a><a href="#shot-2">2</a><a href="#shot-3">3</a><a href="#shot-4">4</a><a href="#shot-5">5</a><a href="#shot-7">7</a><a href="#shot-9">9</a></div>
+    <p>Без кадра 8 теряется пауза перед финалом. Без кадра 6 она поднимает глаза на звук, но мы не видим уток. Это хуже, но всё ещё читается.</p>
+  </div></section>
+
+    <footer>Собрано из 02-scenario.md · 11 окт. 2026 г., 23:01</footer>
+  </main>
+</div>
+
+<script>
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute("data-theme");
+    var next = cur === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+  }
+  (function () {
+    var prefix = "scenario:2026-10-park-reading:";
+    var boxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+    boxes.forEach(function (b) {
+      var key = prefix + b.dataset.key;
+      try { b.checked = localStorage.getItem(key) === "1"; } catch (e) {}
+      b.addEventListener("change", function () {
+        try { localStorage.setItem(key, b.checked ? "1" : "0"); } catch (e) {}
+      });
+    });
+  })();
+</script>
+</body>
+</html>
